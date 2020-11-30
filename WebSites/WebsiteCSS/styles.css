@@ -1,0 +1,45 @@
+#CSS-Tutorial{
+    color: rgb(241, 152, 50);
+}
+
+#box:hover{
+    animation-name: change-color;
+    animation-duration: 5s;
+}
+
+body {
+    background-color: rgb(21,32,43);
+    color: white;
+}
+
+p:hover { 
+    background-color: #e47676;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.fancy-blue-text {
+    color: rgb(72, 149, 175);
+    background-color: antiquewhite;
+    font-family: 'Courier New', Courier, monospace;
+    border-radius: 15px;
+    margin: 15px;
+    padding: 15px;
+}
+
+.flex-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-center; 
+    flex-wrap: wrap;
+    align-items: center;
+}
+@keyframes change-color{
+    0% {background-color: currentColor}
+    100% {background-color: black;}
+}
+
+.box-animation:hover{
+    animation-name: change-color;
+    animation-duration: 5s;
+}

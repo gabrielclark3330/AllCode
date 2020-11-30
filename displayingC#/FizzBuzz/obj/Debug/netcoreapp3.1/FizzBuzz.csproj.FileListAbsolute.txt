@@ -1,0 +1,11 @@
+C:\Users\gabri\OneDrive\Desktop\Coding Projects\displayingC#\FizzBuzz\bin\Debug\netcoreapp3.1\FizzBuzz.exe
+C:\Users\gabri\OneDrive\Desktop\Coding Projects\displayingC#\FizzBuzz\bin\Debug\netcoreapp3.1\FizzBuzz.deps.json
+C:\Users\gabri\OneDrive\Desktop\Coding Projects\displayingC#\FizzBuzz\bin\Debug\netcoreapp3.1\FizzBuzz.runtimeconfig.json
+C:\Users\gabri\OneDrive\Desktop\Coding Projects\displayingC#\FizzBuzz\bin\Debug\netcoreapp3.1\FizzBuzz.runtimeconfig.dev.json
+C:\Users\gabri\OneDrive\Desktop\Coding Projects\displayingC#\FizzBuzz\bin\Debug\netcoreapp3.1\FizzBuzz.dll
+C:\Users\gabri\OneDrive\Desktop\Coding Projects\displayingC#\FizzBuzz\bin\Debug\netcoreapp3.1\FizzBuzz.pdb
+C:\Users\gabri\OneDrive\Desktop\Coding Projects\displayingC#\FizzBuzz\obj\Debug\netcoreapp3.1\FizzBuzz.csprojAssemblyReference.cache
+C:\Users\gabri\OneDrive\Desktop\Coding Projects\displayingC#\FizzBuzz\obj\Debug\netcoreapp3.1\FizzBuzz.AssemblyInfoInputs.cache
+C:\Users\gabri\OneDrive\Desktop\Coding Projects\displayingC#\FizzBuzz\obj\Debug\netcoreapp3.1\FizzBuzz.AssemblyInfo.cs
+C:\Users\gabri\OneDrive\Desktop\Coding Projects\displayingC#\FizzBuzz\obj\Debug\netcoreapp3.1\FizzBuzz.dll
+C:\Users\gabri\OneDrive\Desktop\Coding Projects\displayingC#\FizzBuzz\obj\Debug\netcoreapp3.1\FizzBuzz.pdb

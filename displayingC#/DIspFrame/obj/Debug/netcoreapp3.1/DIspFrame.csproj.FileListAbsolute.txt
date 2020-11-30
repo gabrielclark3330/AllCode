@@ -1,0 +1,11 @@
+C:\Users\gabri\OneDrive\Desktop\Coding Projects\displayingC#\DIspFrame\obj\Debug\netcoreapp3.1\DIspFrame.csprojAssemblyReference.cache
+C:\Users\gabri\OneDrive\Desktop\Coding Projects\displayingC#\DIspFrame\obj\Debug\netcoreapp3.1\DIspFrame.AssemblyInfoInputs.cache
+C:\Users\gabri\OneDrive\Desktop\Coding Projects\displayingC#\DIspFrame\obj\Debug\netcoreapp3.1\DIspFrame.AssemblyInfo.cs
+C:\Users\gabri\OneDrive\Desktop\Coding Projects\displayingC#\DIspFrame\bin\Debug\netcoreapp3.1\DIspFrame.exe
+C:\Users\gabri\OneDrive\Desktop\Coding Projects\displayingC#\DIspFrame\bin\Debug\netcoreapp3.1\DIspFrame.deps.json
+C:\Users\gabri\OneDrive\Desktop\Coding Projects\displayingC#\DIspFrame\bin\Debug\netcoreapp3.1\DIspFrame.runtimeconfig.json
+C:\Users\gabri\OneDrive\Desktop\Coding Projects\displayingC#\DIspFrame\bin\Debug\netcoreapp3.1\DIspFrame.runtimeconfig.dev.json
+C:\Users\gabri\OneDrive\Desktop\Coding Projects\displayingC#\DIspFrame\bin\Debug\netcoreapp3.1\DIspFrame.dll
+C:\Users\gabri\OneDrive\Desktop\Coding Projects\displayingC#\DIspFrame\bin\Debug\netcoreapp3.1\DIspFrame.pdb
+C:\Users\gabri\OneDrive\Desktop\Coding Projects\displayingC#\DIspFrame\obj\Debug\netcoreapp3.1\DIspFrame.dll
+C:\Users\gabri\OneDrive\Desktop\Coding Projects\displayingC#\DIspFrame\obj\Debug\netcoreapp3.1\DIspFrame.pdb
