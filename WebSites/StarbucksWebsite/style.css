@@ -130,6 +130,10 @@ header ul li a {
     transform: scale(0.6);
     filter: invert(1);
 }
+.soc li img:hover {
+    transition: .75s;
+    transform: translateX(-30%);
+}
 .circle {
     position: absolute;
     right: 0;
