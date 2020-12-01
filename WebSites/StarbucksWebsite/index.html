@@ -32,9 +32,9 @@
             </div>
         </div>
         <ul class="thumb">
-            <li><img src="thumb1.png"></li>
-            <li><img src="thumb2.png"></li>
-            <li><img src="thumb3.png"></li>
+            <li><img src="thumb1.png" onclick="imgSlider('img1.png')"></li>
+            <li><img src="thumb2.png" onclick="imgSlider('img2.png')"></li>
+            <li><img src="thumb3.png" onclick="imgSlider('img3.png')"></li>
         </ul>
         <div class="soc">
             <ul>
@@ -43,7 +43,11 @@
                 <li><a href="#"><img src="twitter.png"/></a></li>
             </ul>
         </div>
-        
     </section>
+    <script type="text/javascript">
+        function imgSlider(anything){
+            document.querySelector('.starbucks').src = anything;
+        }
+    </script>
 </body>
 </html>

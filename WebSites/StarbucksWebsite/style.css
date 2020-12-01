@@ -128,13 +128,14 @@ header ul li a {
     display: inline-block;
     margin: 5px 0px;
     transform: scale(0.6);
+    filter: invert(1);
 }
 .circle {
     position: absolute;
-    right: -40%;
-    bottom: -40%;
+    right: 0;
+    bottom: 0;
     height: 100%;
     width: 100%;
     background-color: #017143;
-    border-radius: 50%;
+    clip-path: circle(600px at right 90%);
 }
