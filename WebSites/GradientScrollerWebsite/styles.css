@@ -58,21 +58,38 @@ header ul a {
     width: 100px;
 }
 .sideBar ul {
-    height: 100%;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    flex-wrap: nowrap;
     margin: 0;
     border: 0;
     padding: 0;
+    display: block;
     position: relative;
     list-style: none;
-    display: block;
-    justify-content: center;
-    align-items: center;
+    margin-top: 40vh;
+}
+.loupe img {
+    position: absolute;
+    align-self: center;
+    box-sizing: border-box;
+    width: 50%;
+    margin-top: 200px;
+    margin-left: 25%;
+    margin-right: 25%;
 }
 .sideBar ul a {
+    margin-top: 20px;
+    display: block;
+    text-align: center;
+}
+.sideBar ul a {
+    cursor: pointer;
+    transition: .5s;
+}
+.sideBar ul a li img {
+    cursor: pointer;
+}
+.sideBar ul a li img:hover {
+    transition: .5s;
+    transform: translateX(50%);
 }
 .sideBar ul a img {
     max-width: 30px;

@@ -1,19 +1,28 @@
+@import url('https://fonts.googleapis.com/css2?family=Castoro&display=swap');
 
 body {
     background-color: RGB(20,23,26);
     color: white;
+    font-family: 'Castoro', serif;
 }
 .card {
     background-color: rgb(16,14,23);
     border: 10px solid orange;
+    border-radius: 20px;
     padding: 20px;
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 20px;
 }
+@media (max-width: 768px) {
+    .card {
+        grid-template-columns: 1fr;
+    }
+}
 .details {
     display: flex;
     flex-direction: column;
+    font-size: 1.5rem;
 }
 .buttons {
     margin-block-start: auto;
