@@ -1,0 +1,23 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Varela+Round&display=swap');
+.website {
+    font-family: 'Varela Round', sans-serif;
+    grid-template-columns: 1fr 1.2fr 1.5fr;
+    grid-template-rows: 1fr 4fr 3fr 2fr;
+    height: 100vh;
+}
+.title {
+
+}
+.nom {
+
+}
+.yum {
+
+}
+.diabeetus {
+
+}
+.candyPic {
+
+}
