@@ -1,0 +1,30 @@
+
+body {
+    background-color: RGB(20,23,26);
+    color: white;
+}
+.card {
+    background-color: rgb(16,14,23);
+    border: 10px solid orange;
+    padding: 20px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+.details {
+    display: flex;
+    flex-direction: column;
+}
+.buttons {
+    margin-block-start: auto;
+    display: flex;
+    justify-content: space-between;
+}
+.buttons button {
+    margin-left: 20px;
+    margin-right: 20px;
+}
+.images img {
+    width: 100%;
+    border-radius: 20px;
+}
