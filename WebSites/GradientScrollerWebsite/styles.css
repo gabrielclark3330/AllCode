@@ -1,0 +1,79 @@
+@import url('https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800,900&display=swap');
+
+*{
+    font-family: 'Poppins', sans-serif;
+}
+body {
+    position: relative;
+    margin: 0;
+    border: 0;
+    width: 100vw;
+    height: 100vh;
+    background: -moz-linear-gradient(130deg, rgba(143,130,255,1) 0%, rgba(1,42,97,1) 86%);
+    background: -webkit-linear-gradient(130deg, rgba(143,130,255,1) 0%, rgba(1,42,97,1) 86%);
+    background: linear-gradient(130deg, rgba(143,130,255,1) 0%, rgba(1,42,97,1) 86%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#8f82ff",endColorstr="#012a61",GradientType=1);
+    background-repeat: no-repeat;
+}
+header ul {
+    position: relative;
+    margin: 0;
+    border: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(8px);
+    list-style: none;
+    width: 100vw - 18px;
+    min-height: 100px;
+    justify-content: flex-start;
+}
+header ul a {
+    color: white;
+    padding: 16px;
+    text-decoration: none;
+    align-self: center;
+}
+.Re {
+    margin-left: auto;
+}
+.GLog img {
+    max-width: 100px;
+    filter: invert(1);
+}
+.GabeD img {
+    max-height: 100px;
+    max-width: 100px;
+    border-radius: 50%;
+}
+.sideBar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(8px);
+    height: 100vh;
+    width: 100px;
+}
+.sideBar ul {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    margin: 0;
+    border: 0;
+    padding: 0;
+    position: relative;
+    list-style: none;
+    display: block;
+    justify-content: center;
+    align-items: center;
+}
+.sideBar ul a {
+}
+.sideBar ul a img {
+    max-width: 30px;
+}
