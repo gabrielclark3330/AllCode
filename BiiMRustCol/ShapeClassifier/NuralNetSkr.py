@@ -1,4 +1,3 @@
-import torch
 import numpy as np
 import cv2
 import PIL
@@ -12,6 +11,7 @@ from random import uniform
 from random import random
 from random import randint
 import math
+
 
 # The clases that compose the neural network
 class Neuron:
@@ -36,6 +36,7 @@ class NetLayer:
         else:
             return
         return output
+
 class NuNet:
     def __init__(self, strucArr):
         self.strucArr = strucArr
@@ -48,6 +49,25 @@ class NuNet:
             selfSize = strucArr[i]
             netLayer = NetLayer(selfSize, preSize)
             self.nn.append(netLayer.inputF())
+    def getRowActivation(self, img, index):
+        layerCounter = 2
+        lastLayer = img
+        currentLayer = self.nn[1]
+        store = []
+        for layer in self.strucArr:
+            if layerCounter <= len(self.strucArr):
+                for neuron in currentLayer:
+                    neuronCounter = 0
+                    store.append(float(neuron.inputN(lastLayer)))
+                    neuronCounter += 1
+                np.array(store)
+                np.reshape(store, (len(store), 1))
+                lastLayer = store
+                store = []
+                if layerCounter == index + 1:
+                    return lastLayer
+                currentLayer = self.nn[layerCounter]
+                layerCounter +=1
     def run(self, inputImg):
         layerCounter = 2
         lastLayer = inputImg
@@ -67,6 +87,32 @@ class NuNet:
                     return lastLayer
                 currentLayer = self.nn[layerCounter]
                 layerCounter +=1
+
+def backProp(nn, img):
+    resultMAT = nn.run(img[0])
+    cResultID = img[1]
+    cost = costFunction(resultMAT, img[1])
+    nnLength = len(nn)
+    cResultMAT = np.array(resultMAT)
+    for i in range(0, len(resultMAT)):
+        if i == cResultID-1:
+            cResultMAT[i] = 1
+        else:
+            cResultMAT[i] = 0
+    counter = 0
+    for neuron in nn[nnLength - 1]:
+        error = cResultMAT[counter] - resultMAT[counter]
+        # Array will contain numbers that relate to neuron indecies. The array will be sorted by most positie activation to least positive activation.
+        neurons = testNN.getRowActivation(trainData[0][0], 2)
+        sortedNeuronIndex = list(range(0, len(neurons)))
+        pairArray = []
+        for i in range(0, len(neurons)):
+            pairArray.append([neurons[i],sortedNeuronIndex[i]])
+        
+        for i in neuron.weights:
+            placeHolder
+        counter +=0
+    return NuNet
         
 # The sigmoid function with input x and output y
 def sigmoid(x):
@@ -119,7 +165,6 @@ def grabImages(path):
     return imgSet
 
 def costFunction(resultNN, resultNum):
-    resultNum
     resultID = np.array(resultNN)
     for i in range(0, len(resultNN)):
         if i == resultNum-1:
@@ -131,8 +176,7 @@ def costFunction(resultNN, resultNum):
         cost += (resultNN[i] - resultID[i])**2
     return cost
 
-def backProp():
-    back
+
 
 # Lables for each of the images
 key = {1:"circle", 2:"square", 3:"triangle"}
