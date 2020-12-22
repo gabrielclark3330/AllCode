@@ -1,10 +1,4 @@
-# There are different ways to do a Quick Sort partition, this implements the
-# Hoare partition scheme. Tony Hoare also created the Quick Sort algorithm.
 def partition(nums, low, high):
-    # We select the middle element to be the pivot. Some implementations select
-    # the first element or the last element. Sometimes the median value becomes
-    # the pivot, or a random one. There are many more strategies that can be
-    # chosen or created.
     pivot = nums[(low + high) // 2]
     i = low - 1
     j = high + 1
@@ -24,7 +18,6 @@ def partition(nums, low, high):
         # element at j (on right right of the pivot), then swap them
         nums[i], nums[j] = nums[j], nums[i]
 
-
 def quick_sort(nums):
     # Create a helper function that will be called recursively
     def _quick_sort(items, low, high):
@@ -36,8 +29,20 @@ def quick_sort(nums):
 
     _quick_sort(nums, 0, len(nums) - 1)
 
-
-# Verify it works
 random_list_of_nums = [22, 5, 1, 18, 99]
 quick_sort(random_list_of_nums)
 print(random_list_of_nums)
+
+
+
+# Bubble sort implementation
+random_list_of_nums = [22, 5, 1, 18, 99]
+def bubbleSort(arr):
+    counter = 0
+    for i in range(0, len(random_list_of_nums)):
+        random_list_of_nums[i]
+
+
+
+
+

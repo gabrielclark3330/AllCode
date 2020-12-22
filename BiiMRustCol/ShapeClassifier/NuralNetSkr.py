@@ -101,7 +101,8 @@ def backProp(nn, img):
             cResultMAT[i] = 0
     counter = 0
     for neuron in nn[nnLength - 1]:
-        error = cResultMAT[counter] - resultMAT[counter]
+        error = (cResultMAT[counter] - resultMAT[counter])**2
+        # Maybe implement step size by changing error with scalor!!!!!!!!!
         # Array will contain numbers that relate to neuron indecies. The array will be sorted by most positie activation to least positive activation.
         neurons = testNN.getRowActivation(trainData[0][0], 2)
         sortedNeuronIndex = list(range(0, len(neurons)))
