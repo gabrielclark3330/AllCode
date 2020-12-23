@@ -92,29 +92,34 @@ def backProp(nn, img):
     resultMAT = nn.run(img[0])
     cResultID = img[1]
     cost = costFunction(resultMAT, img[1])
-    nnLength = len(nn)
+    nnLength = len(nn.nn)
     cResultMAT = np.array(resultMAT)
     for i in range(0, len(resultMAT)):
         if i == cResultID-1:
             cResultMAT[i] = 1
         else:
             cResultMAT[i] = 0
-    counter = 0
-    for neuron in nn[nnLength - 1]:
-        error = (cResultMAT[counter] - resultMAT[counter])**2
-        # Maybe implement step size by changing error with scalor!!!!!!!!!
-        # Array will contain numbers that relate to neuron indecies. The array will be sorted by most positie activation to least positive activation.
-        neurons = testNN.getRowActivation(trainData[0][0], 2)
-        sortedNeuronIndex = list(range(0, len(neurons)))
-        pairArray = []
-        for i in range(0, len(neurons)):
-            pairArray.append([neurons[i],sortedNeuronIndex[i]])
-        
-        for i in neuron.weights:
-            placeHolder
-        counter +=0
-    return NuNet
-        
+    for neuron in nn.nn[nnLength - 1]:
+        for counter in range(0, len(cResultMAT)):
+            error = (cResultMAT[counter] - resultMAT[counter])**2
+            error = error/5
+            # Maybe implement step size by changing error with scalor value!!!!!!!!!
+            # Array will contain numbers that relate to neuron indecies. The array will be sorted by most positie activation to least positive activation.
+            neurons = testNN.getRowActivation(trainData[0][0], 2)
+            sortedNeuronIndex = list(range(0, len(neurons)))
+            pairArray = []
+            for i in range(0, len(neurons)):
+                pairArray.append([neurons[i], sortedNeuronIndex[i]])
+            pairArray = bubbleSort(pairArray)
+            # Bottom 15% and top 15% of neurons are selected for adjustment.
+            adjustInd = math.floor(len(pairArray) * .15)
+            for i in range(0, len(pairArray)):
+                pairIndex = pairArray[i][1]
+                if i <= adjustInd:
+                    neuron.weights[0][pairIndex] = neuron.weights[0][pairIndex] + error
+                if i >= len(pairArray)-adjustInd:
+                    neuron.weights[0][pairIndex] = neuron.weights[0][pairIndex] - error/2 # Dividing by two for shits and giggles. I want to model "Neurons that fire together wire together"
+
 # The sigmoid function with input x and output y
 def sigmoid(x):
     y = 1/(1+np.exp(-x))
@@ -177,7 +182,20 @@ def costFunction(resultNN, resultNum):
         cost += (resultNN[i] - resultID[i])**2
     return cost
 
-
+# This version of bubble sort is built for the pair array in backprop
+def bubbleSort(arr):
+    trigger = True
+    counter = 0
+    while trigger == True:
+        trigger = False
+        counter += 1
+        for i in range(0, len(arr)-counter):
+            if arr[i][0] > arr[i+1][0]:
+                holder = arr[i]
+                arr[i] = arr[i+1]
+                arr[i+1] = holder
+                trigger = True
+    return arr
 
 # Lables for each of the images
 key = {1:"circle", 2:"square", 3:"triangle"}
@@ -223,6 +241,20 @@ testData = dataSet[cut:]
 # Neural net set up
 strucArr = [784, 16, 16, 3]
 testNN = NuNet(strucArr)
+
+# Cost function
+averageCost = 0
+for img in trainData:
+    result = testNN.run(img[0])
+    cost = costFunction(result, img[1])
+    averageCost += cost
+averageCost = averageCost/len(trainData)
+print(averageCost)
+
+# Back prop testing last layer only
+for epocs in range(0,10):
+    for img in trainData:
+        backProp(testNN, img)
 
 # Cost function
 averageCost = 0

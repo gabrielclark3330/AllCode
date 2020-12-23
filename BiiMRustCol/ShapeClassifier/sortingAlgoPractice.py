@@ -29,20 +29,25 @@ def quick_sort(nums):
 
     _quick_sort(nums, 0, len(nums) - 1)
 
-random_list_of_nums = [22, 5, 1, 18, 99]
+random_list_of_nums = [22, 5, 1, 18, 99, 24, 105, 53, 69]
 quick_sort(random_list_of_nums)
 print(random_list_of_nums)
 
 
 
 # Bubble sort implementation
-random_list_of_nums = [22, 5, 1, 18, 99]
+random_list_of_nums = [22, 5, 1, 18, 99, 24, 105, 53, 69]
 def bubbleSort(arr):
+    trigger = True
     counter = 0
-    for i in range(0, len(random_list_of_nums)):
-        random_list_of_nums[i]
-
-
-
-
-
+    while trigger == True:
+        trigger = False
+        counter += 1
+        for i in range(0, len(arr)-counter):
+            if arr[i] > arr[i+1]:
+                holder = arr[i]
+                arr[i] = arr[i+1]
+                arr[i+1] = holder
+                trigger = True
+    return arr
+print(bubbleSort(random_list_of_nums))
