@@ -16,8 +16,9 @@ import math
 # The clases that compose the neural network
 class Neuron:
     def __init__(self, preSize):
-        self.weights = np.random.rand(1, preSize)
-        self.bias = uniform(-1,1)
+        self.weights = np.random.uniform(low=-2.0, high=2.0, size=(1, preSize))
+        #self.weights = np.random.rand(1, preSize)
+        self.bias = uniform(-3,3)
     def inputN(self, input): # Input is a previous layer of neurons
         output = (np.dot(self.weights, input)) + self.bias
         output = sigmoid(output)
@@ -101,18 +102,10 @@ def backProp(nn, img):
             cResultMAT[i] = 0
         layerIndex = 3
     def initializeBackProp(lastLayerIndex, layerIndex, cResultMAT):
-        for neuron in nn.nn[lastLayerIndex]:
+        for neuron in nn.nn[layerIndex]:
             for counter in range(0, len(cResultMAT)):
-                # Beginning case and recursive case.
-                if lastLayerIndex == layerIndex:
-                    error = (cResultMAT[counter] - resultMAT[counter])**2  # Assign an error to the top 3 and bottom 3 entries in the pairArray.
-                    error = error/5
-                else:
-                    if counter <= math.floor(len(cResultMAT) * .15):
-                        error = 10
-                    elif counter >= math.floor(len(cResultMAT) * .15):
-                        error = 10
-                    error = error/5
+                error = (cResultMAT[counter] - resultMAT[counter])**2  # Assign an error to the top 3 and bottom 3 entries in the pairArray.
+                error = error/5
                 # Maybe implement step size by changing error with scalor value!!!!!!!!!
                 # Array will contain numbers that relate to neuron indecies. The array will be sorted by most positie activation to least positive activation.
                 neurons = testNN.getRowActivation(img[0], layerIndex - 1)
@@ -129,7 +122,6 @@ def backProp(nn, img):
                         neuron.weights[0][pairIndex] = neuron.weights[0][pairIndex] + error
                     if i >= len(pairArray)-adjustInd:
                         neuron.weights[0][pairIndex] = neuron.weights[0][pairIndex] - error
-                initializeBackProp(nnLength-1, layerIndex-1, pairArray)
     initializeBackProp(nnLength-1, nnLength-1, cResultMAT)
 
 # The sigmoid function with input x and output y
