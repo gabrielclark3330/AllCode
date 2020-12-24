@@ -90,35 +90,47 @@ class NuNet:
 
 def backProp(nn, img):
     resultMAT = nn.run(img[0])
-    cResultID = img[1]
+    cResultID = img[1] # This is the cost result matrix
     cost = costFunction(resultMAT, img[1])
     nnLength = len(nn.nn)
-    cResultMAT = np.array(resultMAT)
+    cResultMAT = np.array(resultMAT) # the next cost result matrix will just contain the error values for the previous layer of neurons
     for i in range(0, len(resultMAT)):
         if i == cResultID-1:
             cResultMAT[i] = 1
         else:
             cResultMAT[i] = 0
-    for neuron in nn.nn[nnLength - 1]:
-        for counter in range(0, len(cResultMAT)):
-            error = (cResultMAT[counter] - resultMAT[counter])**2
-            error = error/5
-            # Maybe implement step size by changing error with scalor value!!!!!!!!!
-            # Array will contain numbers that relate to neuron indecies. The array will be sorted by most positie activation to least positive activation.
-            neurons = testNN.getRowActivation(trainData[0][0], 2)
-            sortedNeuronIndex = list(range(0, len(neurons)))
-            pairArray = []
-            for i in range(0, len(neurons)):
-                pairArray.append([neurons[i], sortedNeuronIndex[i]])
-            pairArray = bubbleSort(pairArray)
-            # Bottom 15% and top 15% of neurons are selected for adjustment.
-            adjustInd = math.floor(len(pairArray) * .15)
-            for i in range(0, len(pairArray)):
-                pairIndex = pairArray[i][1]
-                if i <= adjustInd:
-                    neuron.weights[0][pairIndex] = neuron.weights[0][pairIndex] + error
-                if i >= len(pairArray)-adjustInd:
-                    neuron.weights[0][pairIndex] = neuron.weights[0][pairIndex] - error/2 # Dividing by two for shits and giggles. I want to model "Neurons that fire together wire together"
+        layerIndex = 3
+    def initializeBackProp(lastLayerIndex, layerIndex, cResultMAT):
+        for neuron in nn.nn[lastLayerIndex]:
+            for counter in range(0, len(cResultMAT)):
+                # Beginning case and recursive case.
+                if lastLayerIndex == layerIndex:
+                    error = (cResultMAT[counter] - resultMAT[counter])**2  # Assign an error to the top 3 and bottom 3 entries in the pairArray.
+                    error = error/5
+                else:
+                    if counter <= math.floor(len(cResultMAT) * .15):
+                        error = 10
+                    elif counter >= math.floor(len(cResultMAT) * .15):
+                        error = 10
+                    error = error/5
+                # Maybe implement step size by changing error with scalor value!!!!!!!!!
+                # Array will contain numbers that relate to neuron indecies. The array will be sorted by most positie activation to least positive activation.
+                neurons = testNN.getRowActivation(img[0], layerIndex - 1)
+                sortedNeuronIndex = list(range(0, len(neurons)))
+                pairArray = []
+                for i in range(0, len(neurons)):
+                    pairArray.append([neurons[i], sortedNeuronIndex[i]])
+                pairArray = bubbleSort(pairArray)
+                # Bottom 15% and top 15% of neurons are selected for adjustment.
+                adjustInd = math.floor(len(pairArray) * .15)
+                for i in range(0, len(pairArray)):
+                    pairIndex = pairArray[i][1]
+                    if i <= adjustInd:
+                        neuron.weights[0][pairIndex] = neuron.weights[0][pairIndex] + error
+                    if i >= len(pairArray)-adjustInd:
+                        neuron.weights[0][pairIndex] = neuron.weights[0][pairIndex] - error
+                initializeBackProp(nnLength-1, layerIndex-1, pairArray)
+    initializeBackProp(nnLength-1, nnLength-1, cResultMAT)
 
 # The sigmoid function with input x and output y
 def sigmoid(x):
@@ -250,17 +262,14 @@ for img in trainData:
     averageCost += cost
 averageCost = averageCost/len(trainData)
 print(averageCost)
-
+ 
 # Back prop testing last layer only
-for epocs in range(0,10):
+for epocs in range(0, 15):
+    averageCost = 0
     for img in trainData:
         backProp(testNN, img)
-
-# Cost function
-averageCost = 0
-for img in trainData:
-    result = testNN.run(img[0])
-    cost = costFunction(result, img[1])
-    averageCost += cost
-averageCost = averageCost/len(trainData)
-print(averageCost)
+        result = testNN.run(img[0])
+        cost = costFunction(result, img[1])
+        averageCost += cost
+    averageCost = averageCost/len(trainData)
+    print(averageCost)
