@@ -1,2 +1,2 @@
 # AllCode
-Hosts all personal code
+This repo holds most of the personal code that I write.
