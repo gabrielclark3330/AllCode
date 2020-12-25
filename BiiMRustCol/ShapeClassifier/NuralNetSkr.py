@@ -17,7 +17,6 @@ import math
 class Neuron:
     def __init__(self, preSize):
         self.weights = np.random.uniform(low=-2.0, high=2.0, size=(1, preSize))
-        #self.weights = np.random.rand(1, preSize)
         self.bias = uniform(-3,3)
     def inputN(self, input): # Input is a previous layer of neurons
         output = (np.dot(self.weights, input)) + self.bias
@@ -90,8 +89,10 @@ class NuNet:
                 layerCounter +=1
 
 def backProp(nn, img):
+    def transferDerivative(output):
+        return output * (1.0 - output)
     resultMAT = nn.run(img[0])
-    cResultID = img[1] # This is the cost result matrix
+    cResultID = img[1]
     cost = costFunction(resultMAT, img[1])
     nnLength = len(nn.nn)
     cResultMAT = np.array(resultMAT) # the next cost result matrix will just contain the error values for the previous layer of neurons
@@ -100,8 +101,21 @@ def backProp(nn, img):
             cResultMAT[i] = 1
         else:
             cResultMAT[i] = 0
-        layerIndex = 3
-    def initializeBackProp(lastLayerIndex, layerIndex, cResultMAT):
+    def inBackProp(lastLayerIndex, layerIndex, cResultMAT):
+        for neuron in nn.nn[layerIndex]:
+            for counter in range(0, len(cResultMAT)):
+                error = (cResultMAT[counter] - resultMAT[counter]) * transferDerivative(resultMAT[counter])
+                # Maybe implement step size by changing error with scalor value!!!!!!!!!
+                neuronActivations = testNN.getRowActivation(img[0], layerIndex - 1)
+                editedActivations = neuronActivations
+                editedActivations[:] = [nurAc - .5 for nurAc in neuronActivations]
+                for index in range(0, len(neuron.weights[0])):
+                    neuron.weights[0][index] = neuron.weights[0][index] + error*(editedActivations[index])
+    inBackProp(nnLength-1, nnLength-1, cResultMAT)
+
+
+
+    """def initializeBackProp(lastLayerIndex, layerIndex, cResultMAT):
         for neuron in nn.nn[layerIndex]:
             for counter in range(0, len(cResultMAT)):
                 error = (cResultMAT[counter] - resultMAT[counter])**2  # Assign an error to the top 3 and bottom 3 entries in the pairArray.
@@ -122,7 +136,7 @@ def backProp(nn, img):
                         neuron.weights[0][pairIndex] = neuron.weights[0][pairIndex] + error
                     if i >= len(pairArray)-adjustInd:
                         neuron.weights[0][pairIndex] = neuron.weights[0][pairIndex] - error
-    initializeBackProp(nnLength-1, nnLength-1, cResultMAT)
+    initializeBackProp(nnLength-1, nnLength-1, cResultMAT)"""
 
 # The sigmoid function with input x and output y
 def sigmoid(x):
@@ -256,7 +270,7 @@ averageCost = averageCost/len(trainData)
 print(averageCost)
  
 # Back prop testing last layer only
-for epocs in range(0, 15):
+for epocs in range(0, 50):
     averageCost = 0
     for img in trainData:
         backProp(testNN, img)
