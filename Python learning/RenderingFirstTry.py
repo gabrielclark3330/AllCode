@@ -4,6 +4,7 @@ import numpy as np
 #equation of circle
 # r^2 = (x-h)^2 + (y-k)**2
 # y = math.sqrt(1000 - (x-h)**2)+k
+# The below code attempts to render a circle point by point.
 def main():
     win = GraphWin("C0ol Renderings Here", 750, 750)
     win.setBackground(color_rgb(0,0,0))
