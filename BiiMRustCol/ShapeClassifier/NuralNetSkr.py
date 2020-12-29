@@ -89,8 +89,8 @@ class NuNet:
                 layerCounter +=1
 
 def backProp(nn, img):
-    def transferDerivative(output):
-        return output * (1.0 - output)
+    def transferDerivative(input):
+        return input * (1.0 - input)
     resultMAT = nn.run(img[0])
     cResultID = img[1]
     cost = costFunction(resultMAT, img[1])
@@ -110,33 +110,8 @@ def backProp(nn, img):
                 editedActivations = neuronActivations
                 editedActivations[:] = [nurAc - .5 for nurAc in neuronActivations]
                 for index in range(0, len(neuron.weights[0])):
-                    neuron.weights[0][index] = neuron.weights[0][index] + error*(editedActivations[index])
+                    neuron.weights[0][index] = neuron.weights[0][index] + error 
     inBackProp(nnLength-1, nnLength-1, cResultMAT)
-
-
-
-    """def initializeBackProp(lastLayerIndex, layerIndex, cResultMAT):
-        for neuron in nn.nn[layerIndex]:
-            for counter in range(0, len(cResultMAT)):
-                error = (cResultMAT[counter] - resultMAT[counter])**2  # Assign an error to the top 3 and bottom 3 entries in the pairArray.
-                error = error/5
-                # Maybe implement step size by changing error with scalor value!!!!!!!!!
-                # Array will contain numbers that relate to neuron indecies. The array will be sorted by most positie activation to least positive activation.
-                neurons = testNN.getRowActivation(img[0], layerIndex - 1)
-                sortedNeuronIndex = list(range(0, len(neurons)))
-                pairArray = []
-                for i in range(0, len(neurons)):
-                    pairArray.append([neurons[i], sortedNeuronIndex[i]])
-                pairArray = bubbleSort(pairArray)
-                # Bottom 15% and top 15% of neurons are selected for adjustment.
-                adjustInd = math.floor(len(pairArray) * .15)
-                for i in range(0, len(pairArray)):
-                    pairIndex = pairArray[i][1]
-                    if i <= adjustInd:
-                        neuron.weights[0][pairIndex] = neuron.weights[0][pairIndex] + error
-                    if i >= len(pairArray)-adjustInd:
-                        neuron.weights[0][pairIndex] = neuron.weights[0][pairIndex] - error
-    initializeBackProp(nnLength-1, nnLength-1, cResultMAT)"""
 
 # The sigmoid function with input x and output y
 def sigmoid(x):
