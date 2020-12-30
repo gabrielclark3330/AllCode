@@ -91,27 +91,27 @@ class NuNet:
 def backProp(nn, img):
     def transferDerivative(input):
         return input * (1.0 - input)
-    resultMAT = nn.run(img[0])
-    cResultID = img[1]
-    cost = costFunction(resultMAT, img[1])
-    nnLength = len(nn.nn)
-    cResultMAT = np.array(resultMAT) # the next cost result matrix will just contain the error values for the previous layer of neurons
-    for i in range(0, len(resultMAT)):
-        if i == cResultID-1:
-            cResultMAT[i] = 1
+    outputMAT = nn.run(img[0])
+    targetMAT = np.array(outputMAT) # the next cost result matrix will just contain the error values for the previous layer of neurons
+    for i in range(0, len(outputMAT)):
+        if i == img[1]-1:
+            targetMAT[i] = 1
         else:
-            cResultMAT[i] = 0
-    def inBackProp(lastLayerIndex, layerIndex, cResultMAT):
-        for neuron in nn.nn[layerIndex]:
-            for counter in range(0, len(cResultMAT)):
-                error = (cResultMAT[counter] - resultMAT[counter]) * transferDerivative(resultMAT[counter])
+            targetMAT[i] = 0
+    neuronError = np.zeros((len(targetMAT),1))
+    for counter in range(0, len(targetMAT)):
+        neuronError[counter] = (targetMAT[counter] - outputMAT[counter]) * transferDerivative(outputMAT[counter])
+    def inBackProp(oporationIndex, neuronError):
+        for neuron in nn.nn[oporationIndex]:
+            for counter in range(0, len(neuronError)):
+                neuron.bias = neuron.bias + np.sum(neuronError)
                 # Maybe implement step size by changing error with scalor value!!!!!!!!!
-                neuronActivations = testNN.getRowActivation(img[0], layerIndex - 1)
+                neuronActivations = testNN.getRowActivation(img[0], oporationIndex - 1)
                 editedActivations = neuronActivations
                 editedActivations[:] = [nurAc - .5 for nurAc in neuronActivations]
                 for index in range(0, len(neuron.weights[0])):
-                    neuron.weights[0][index] = neuron.weights[0][index] + error 
-    inBackProp(nnLength-1, nnLength-1, cResultMAT)
+                    neuron.weights[0][index] = neuron.weights[0][index] + neuronError[counter]
+    inBackProp(len(nn.nn)-1, neuronError)
 
 # The sigmoid function with input x and output y
 def sigmoid(x):
