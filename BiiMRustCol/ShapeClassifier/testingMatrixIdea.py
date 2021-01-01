@@ -27,11 +27,11 @@ class NetLayer:
         self.selfSize = selfSize
         self.preSize = preSize
     def inputF(self):
-        layer = []
+        layerW = np.random.uniform(low=-2.0, high=2.0, size=(self.selfSize, self.preSize))
+        layerB = np.random.uniform(low=-2.0, high=2.0, size=(self.selfSize, 1))
+        layer = [layerW, layerB]
         if self.preSize >= 1:
-            for i in range(0, self.selfSize):
-                layer.append(Neuron(self.preSize))
-            output = layer
+            output=layer
         else:
             return
         return output
@@ -49,42 +49,32 @@ class NuNet:
             netLayer = NetLayer(selfSize, preSize)
             self.nn.append(netLayer.inputF())
     def getRowActivation(self, img, index):
-        layerCounter = 2
+        layerCounter = 1
         lastLayer = img
-        currentLayer = self.nn[1]
-        store = []
         for layer in self.strucArr:
-            if layerCounter <= len(self.strucArr):
-                for neuron in currentLayer:
-                    neuronCounter = 0
-                    store.append(float(neuron.inputN(lastLayer)))
-                    neuronCounter += 1
-                np.array(store)
-                np.reshape(store, (len(store), 1))
-                lastLayer = store
-                store = []
-                if layerCounter == index + 1:
+            if layerCounter < len(self.strucArr):
+                layerWeights = self.nn[layerCounter][0]*lastLayer
+                layerWeightsBias = layerWeights + self.nn[layerCounter][1]
+                activatedLayer = np.zeros((layerWeightsBias,1))
+                for i in range(0, len(activatedLayer)):
+                    activatedLayer[i] = sigmoid(layerWeightsBias[1])
+                lastLayer = activatedLayer
+                if layerCounter == index:
                     return lastLayer
-                currentLayer = self.nn[layerCounter]
                 layerCounter +=1
     def run(self, inputImg):
-        layerCounter = 2
+        layerCounter = 1
         lastLayer = inputImg
-        currentLayer = self.nn[1]
-        store = []
         for layer in self.strucArr:
-            if layerCounter <= len(self.strucArr):
-                for neuron in currentLayer:
-                    neuronCounter = 0
-                    store.append(float(neuron.inputN(lastLayer)))
-                    neuronCounter += 1
-                np.array(store)
-                np.reshape(store, (len(store), 1))
-                lastLayer = store
-                store = []
-                if layerCounter == len(self.nn):
+            if layerCounter < len(self.strucArr):
+                layerWeights = np.matmul(self.nn[layerCounter][0], lastLayer)
+                layerWeightsBias = np.add(layerWeights, self.nn[layerCounter][1])
+                activatedLayer = np.zeros((len(layerWeightsBias),1))
+                for i in range(0, len(activatedLayer)):
+                    activatedLayer[i] = sigmoid(layerWeightsBias[1])
+                lastLayer = activatedLayer
+                if layerCounter == len(self.nn)-1:
                     return lastLayer
-                currentLayer = self.nn[layerCounter]
                 layerCounter +=1
 
 def backProp(nn, img):
@@ -93,12 +83,14 @@ def backProp(nn, img):
     def errorInLayer(forwardError, weights):
         errorInLayer = np.zeros((1,1))
         return errorInLayer
+        
     def inBackProp(oporationIndex, neuronError):
         for neuron in nn.nn[oporationIndex]:
             for counter in range(0, len(neuronError)):
                 neuron.bias = neuron.bias + np.sum(neuronError)
                 for index in range(0, len(neuron.weights[0])):
                     neuron.weights[0][index] = neuron.weights[0][index]+neuronError[counter]
+
     # Calculation of the error of final layer
     outputMAT = nn.run(img[0])
     targetMAT = np.array(outputMAT)
@@ -112,7 +104,7 @@ def backProp(nn, img):
         neuronError[counter] = (targetMAT[counter]-outputMAT[counter])*transferDerivative(outputMAT[counter])
     # Starting backprop calculation
     inBackProp(len(nn.nn)-1, neuronError)
-    errorInLayer(neuronError, weights)
+    #errorInLayer(neuronError, weights)
 
 # The sigmoid function with input x and output y
 def sigmoid(x):
