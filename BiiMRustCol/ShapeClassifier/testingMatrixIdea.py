@@ -13,22 +13,14 @@ from random import randint
 import math
 
 # The clases that compose the neural network
-class Neuron:
-    def __init__(self, preSize):
-        self.weights = np.random.uniform(low=-2.0, high=2.0, size=(1, preSize))
-        self.bias = uniform(-3,3)
-    def inputN(self, input): # Input is a previous layer of neurons
-        output = (np.dot(self.weights, input)) + self.bias
-        output = sigmoid(output)
-        return output
-
 class NetLayer:
     def __init__(self, selfSize, preSize):
         self.selfSize = selfSize
         self.preSize = preSize
     def inputF(self):
-        layerW = np.random.uniform(low=-2.0, high=2.0, size=(self.selfSize, self.preSize))
-        layerB = np.random.uniform(low=-2.0, high=2.0, size=(self.selfSize, 1))
+        layerW = np.random.uniform(low=-1.0, high=1.0, size=(self.selfSize, self.preSize))
+        #layerB = np.random.uniform(low=-2.0, high=2.0, size=(self.selfSize, 1))
+        layerB = np.zeros((self.selfSize, 1))
         layer = [layerW, layerB]
         if self.preSize >= 1:
             output=layer
@@ -37,9 +29,10 @@ class NetLayer:
         return output
 
 class NuNet:
-    def __init__(self, strucArr):
+    def __init__(self, strucArr, lr):
         self.strucArr = strucArr
         self.nn = []
+        self.lr = lr
         for i in range(0, len(self.strucArr)):
             if i == 0:
                 preSize = 0
@@ -48,48 +41,57 @@ class NuNet:
             selfSize = strucArr[i]
             netLayer = NetLayer(selfSize, preSize)
             self.nn.append(netLayer.inputF())
+    # running getRowActivation with the index of len(self.nn)-1 will do the same thing as running the network.
     def getRowActivation(self, img, index):
         layerCounter = 1
         lastLayer = img
-        for layer in self.strucArr:
-            if layerCounter < len(self.strucArr):
-                layerWeights = self.nn[layerCounter][0]*lastLayer
-                layerWeightsBias = layerWeights + self.nn[layerCounter][1]
-                activatedLayer = np.zeros((layerWeightsBias,1))
-                for i in range(0, len(activatedLayer)):
-                    activatedLayer[i] = sigmoid(layerWeightsBias[1])
-                lastLayer = activatedLayer
-                if layerCounter == index:
-                    return lastLayer
-                layerCounter +=1
-    def run(self, inputImg):
-        layerCounter = 1
-        lastLayer = inputImg
         for layer in self.strucArr:
             if layerCounter < len(self.strucArr):
                 layerWeights = np.matmul(self.nn[layerCounter][0], lastLayer)
                 layerWeightsBias = np.add(layerWeights, self.nn[layerCounter][1])
                 activatedLayer = np.zeros((len(layerWeightsBias),1))
                 for i in range(0, len(activatedLayer)):
-                    activatedLayer[i] = sigmoid(layerWeightsBias[1])
+                    activatedLayer[i] = sigmoid(layerWeightsBias[i][0])
+                lastLayer = activatedLayer
+                if layerCounter == index:
+                    return lastLayer
+                layerCounter +=1
+    def run(self, img):
+        layerCounter = 1
+        lastLayer = img
+        for layer in self.strucArr:
+            if layerCounter < len(self.strucArr):
+                layerWeights = np.matmul(self.nn[layerCounter][0], lastLayer)
+                layerWeightsBias = np.add(layerWeights, self.nn[layerCounter][1])
+                activatedLayer = np.zeros((len(layerWeightsBias),1))
+                for i in range(0, len(activatedLayer)):
+                    activatedLayer[i] = sigmoid(layerWeightsBias[i][0])
                 lastLayer = activatedLayer
                 if layerCounter == len(self.nn)-1:
                     return lastLayer
                 layerCounter +=1
 
+# Function takes the image and label and adjusts network to get closer to the right answer.
 def backProp(nn, img):
-    def transferDerivative(input):
-        return input*(1.0-input)
+    # Pass this function the error in the forward layer and the weights behind it. It will give you the error in the previous layer.
     def errorInLayer(forwardError, weights):
-        errorInLayer = np.zeros((1,1))
+        errorInLayer = np.zeros((len(weights[0]), 1))
+        for i in range(0, len(weights)):
+            for j in range(0, len(weights[0])):
+                errorInLayer[j][0] += weights[i][j]*forwardError[i]
         return errorInLayer
-        
-    def inBackProp(oporationIndex, neuronError):
-        for neuron in nn.nn[oporationIndex]:
-            for counter in range(0, len(neuronError)):
-                neuron.bias = neuron.bias + np.sum(neuronError)
-                for index in range(0, len(neuron.weights[0])):
-                    neuron.weights[0][index] = neuron.weights[0][index]+neuronError[counter]
+    # Function to adjust the weights and biasses.
+    def inBackProp(oporationIndex, neuronError, endOutput):
+        # newBias = originalBias+error*lr
+        nn.nn[oporationIndex][1] = np.add(nn.nn[oporationIndex][1], nn.lr*neuronError)
+        # newWeight = originalWeight+error*lr*originalWeight
+        weights = nn.nn[oporationIndex][0]
+        previousOuput = nn.getRowActivation(img[0], oporationIndex)
+        lrGradient = nn.lr*neuronError*(endOutput*(1-endOutput))
+        #print(lrGradient)
+        nn.nn[oporationIndex][0] = np.add(weights, np.matmul(lrGradient, np.transpose(previousOuput)))
+        #nn.nn[oporationIndex][0] = np.add(weights, np.matmul(np.transpose(previousOuput), lrGradient))
+        #print(np.add(weights, np.matmul(lrGradient, np.transpose(previousOuput))))
 
     # Calculation of the error of final layer
     outputMAT = nn.run(img[0])
@@ -101,10 +103,11 @@ def backProp(nn, img):
             targetMAT[i] = 0
     neuronError = np.zeros((len(targetMAT), 1))
     for counter in range(0, len(targetMAT)):
-        neuronError[counter] = (targetMAT[counter]-outputMAT[counter])*transferDerivative(outputMAT[counter])
-    # Starting backprop calculation
-    inBackProp(len(nn.nn)-1, neuronError)
-    #errorInLayer(neuronError, weights)
+        neuronError[counter] = (targetMAT[counter]-outputMAT[counter])
+    # Starting backprop calculation for last layer
+    for i in range(1,len(nn.nn)):
+        inBackProp(len(nn.nn)-i, neuronError, nn.getRowActivation(img[0], len(nn.nn)-i))
+        neuronError = errorInLayer(neuronError, nn.nn[len(nn.nn)-i][0])
 
 # The sigmoid function with input x and output y
 def sigmoid(x):
@@ -183,6 +186,34 @@ def bubbleSort(arr):
                 trigger = True
     return arr
 
+################################################ XOR START #######################################
+
+# XOR train data
+trainData = [
+    [[1,1],0],
+    [[1,0],1],
+    [[0,1],1],
+    [[0,0],0]
+]
+
+# Test for xor problem
+strucArr = [2, 2, 1]
+testNN = NuNet(strucArr, .3)
+
+for epocs in range(0, 1000):
+    averageCost = 0
+    shuffle(trainData)
+    for img in trainData:
+        backProp(testNN, img)
+        result = testNN.run(img[0])
+        cost = costFunction(result, img[1])
+        averageCost += cost
+    averageCost = averageCost/len(trainData)
+    print(testNN.run([1,1]),testNN.run([1,0]),testNN.run([0,1]),testNN.run([0,0]))
+    print(averageCost)
+
+######################## XOR END #####################################
+
 # Lables for each of the images
 key = {1:"circle", 2:"square", 3:"triangle"}
 
@@ -194,10 +225,13 @@ triangles = grabImages("handDrawnShapes\\triangles")
 # Create an array of all images with a label attached.
 dataSet = []
 for img in circles:
+    img = np.asarray(img)
     dataSet.append([img, 1])
 for img in squares:
+    img = np.asarray(img)
     dataSet.append([img, 2])
 for img in triangles:
+    img = np.asarray(img)
     dataSet.append([img, 3])
 shuffle(dataSet)
 shuffle(dataSet)
@@ -225,8 +259,8 @@ trainData = dataSet[:cut]
 testData = dataSet[cut:]
 
 # Neural net set up
-strucArr = [784, 16, 16, 3]
-testNN = NuNet(strucArr)
+strucArr = [784, 8, 8, 3]
+testNN = NuNet(strucArr, .1)
 
 # Cost function
 averageCost = 0
@@ -247,3 +281,14 @@ for epocs in range(0, 50):
         averageCost += cost
     averageCost = averageCost/len(trainData)
     print(averageCost)
+
+
+# Cost function
+averageCost = 0
+for img in testData:
+    result = testNN.run(img[0])
+    cost = costFunction(result, img[1])
+    averageCost += cost
+averageCost = averageCost/len(trainData)
+print(averageCost)
+

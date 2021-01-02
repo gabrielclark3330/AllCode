@@ -1,3 +1,6 @@
+import numpy as np
+from random import shuffle
+
 def partition(nums, low, high):
     pivot = nums[(low + high) // 2]
     i = low - 1
@@ -51,3 +54,9 @@ def bubbleSort(arr):
                 trigger = True
     return arr
 print(bubbleSort(random_list_of_nums))
+
+
+x = np.array([1,2,3])
+y = np.transpose(np.array([[2,2,2],[1,1,1]]))
+print(y)
+print(1-y)
