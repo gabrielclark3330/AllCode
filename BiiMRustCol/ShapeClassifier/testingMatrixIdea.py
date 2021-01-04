@@ -19,8 +19,9 @@ class NetLayer:
         self.preSize = preSize
     def inputF(self):
         layerW = np.random.uniform(low=-1.0, high=1.0, size=(self.selfSize, self.preSize))
-        #layerB = np.random.uniform(low=-2.0, high=2.0, size=(self.selfSize, 1))
         layerB = np.zeros((self.selfSize, 1))
+        layerW = np.asmatrix(layerW)
+        layerB = np.asmatrix(layerB)
         layer = [layerW, layerB]
         if self.preSize >= 1:
             output=layer
@@ -43,6 +44,9 @@ class NuNet:
             self.nn.append(netLayer.inputF())
     # running getRowActivation with the index of len(self.nn)-1 will do the same thing as running the network.
     def getRowActivation(self, img, index):
+        img[0] = np.asmatrix(img[0])
+        if index==0:
+            return img
         layerCounter = 1
         lastLayer = img
         for layer in self.strucArr:
@@ -54,9 +58,10 @@ class NuNet:
                     activatedLayer[i] = sigmoid(layerWeightsBias[i][0])
                 lastLayer = activatedLayer
                 if layerCounter == index:
-                    return lastLayer
+                    return np.asarray(lastLayer)
                 layerCounter +=1
     def run(self, img):
+        img[0] = np.asmatrix(img[0])
         layerCounter = 1
         lastLayer = img
         for layer in self.strucArr:
@@ -68,29 +73,40 @@ class NuNet:
                     activatedLayer[i] = sigmoid(layerWeightsBias[i][0])
                 lastLayer = activatedLayer
                 if layerCounter == len(self.nn)-1:
-                    return lastLayer
+                    return np.asarray(lastLayer)
                 layerCounter +=1
 
 # Function takes the image and label and adjusts network to get closer to the right answer.
 def backProp(nn, img):
+    img[0] = np.asmatrix(img[0])
     # Pass this function the error in the forward layer and the weights behind it. It will give you the error in the previous layer.
     def errorInLayer(forwardError, weights):
-        errorInLayer = np.zeros((len(weights[0]), 1))
-        for i in range(0, len(weights)):
-            for j in range(0, len(weights[0])):
-                errorInLayer[j][0] += weights[i][j]*forwardError[i]
+        print(f"Weights:{weights}")
+        print(f"forwardError:{forwardError}")
+        print(f"weights.shape{weights.shape}")
+        errorInLayer = np.zeros((weights.shape[1], 1))
+        errorInLayer = np.asmatrix(errorInLayer)
+        for i in range(0, weights.shape[0]):
+            for j in range(0, weights.shape[1]):
+                print(weights[i][j])
+                print(forwardError[i][0])
+                errorInLayer[j][0] += weights[i][j]*forwardError[i][0]
         return errorInLayer
     # Function to adjust the weights and biasses.
     def inBackProp(oporationIndex, neuronError, endOutput):
         # newBias = originalBias+error*lr
         nn.nn[oporationIndex][1] = np.add(nn.nn[oporationIndex][1], nn.lr*neuronError)
         # newWeight = originalWeight+error*lr*originalWeight
+        print(f"OPIND:{oporationIndex}")
         weights = nn.nn[oporationIndex][0]
-        previousOuput = nn.getRowActivation(img[0], oporationIndex)
+        print(f"weights:{weights}")
+        previousOuput = nn.getRowActivation(img[0], oporationIndex-1)
+        print(f"transposePRE:{np.transpose(previousOuput)}")
         lrGradient = nn.lr*neuronError*(endOutput*(1-endOutput))
-        #print(lrGradient)
+        print(f"lrGradient:{lrGradient}")
+        print(f"matmul:{np.matmul(lrGradient, np.transpose(previousOuput))}")
+        print("---------------------------------------------------")
         nn.nn[oporationIndex][0] = np.add(weights, np.matmul(lrGradient, np.transpose(previousOuput)))
-        #nn.nn[oporationIndex][0] = np.add(weights, np.matmul(np.transpose(previousOuput), lrGradient))
         #print(np.add(weights, np.matmul(lrGradient, np.transpose(previousOuput))))
 
     # Calculation of the error of final layer
@@ -190,10 +206,10 @@ def bubbleSort(arr):
 
 # XOR train data
 trainData = [
-    [[1,1],0],
-    [[1,0],1],
-    [[0,1],1],
-    [[0,0],0]
+    [np.array([[1],[1]]),0],
+    [np.array([[1],[0]]),1],
+    [np.array([[0],[1]]),1],
+    [np.array([[0],[0]]),0]
 ]
 
 # Test for xor problem
@@ -209,7 +225,7 @@ for epocs in range(0, 1000):
         cost = costFunction(result, img[1])
         averageCost += cost
     averageCost = averageCost/len(trainData)
-    print(testNN.run([1,1]),testNN.run([1,0]),testNN.run([0,1]),testNN.run([0,0]))
+    print(testNN.run([[1],[1]]),testNN.run([[1],[0]]),testNN.run([[0],[1]]),testNN.run([[0],[0]]))
     print(averageCost)
 
 ######################## XOR END #####################################
@@ -260,16 +276,7 @@ testData = dataSet[cut:]
 
 # Neural net set up
 strucArr = [784, 8, 8, 3]
-testNN = NuNet(strucArr, .1)
-
-# Cost function
-averageCost = 0
-for img in trainData:
-    result = testNN.run(img[0])
-    cost = costFunction(result, img[1])
-    averageCost += cost
-averageCost = averageCost/len(trainData)
-print(averageCost)
+testNN = NuNet(strucArr, .01)
  
 # Back prop testing last layer only
 for epocs in range(0, 50):

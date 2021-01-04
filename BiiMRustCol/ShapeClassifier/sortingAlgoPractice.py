@@ -56,7 +56,17 @@ def bubbleSort(arr):
 print(bubbleSort(random_list_of_nums))
 
 
-x = np.array([1,2,3])
-y = np.transpose(np.array([[2,2,2],[1,1,1]]))
+x = np.matrix([2,2])
+# x = np.array([1,2])
+# x = np.transpose(x)
+y = np.matrix([2,2])
+print(y[0][0])
+print(x)
+print("*")
 print(y)
-print(1-y)
+print("----")
+print(np.add(x, y))
+
+z = np.matrix([[1,2,3],[1,2,3]])
+for i in range(0,1):
+    print(range(0, 1))
