@@ -70,7 +70,7 @@ class NuNet:
                 layerWeightsBias = np.add(layerWeights, self.nn[layerCounter][1])
                 activatedLayer = np.zeros((len(layerWeightsBias),1))
                 for i in range(0, len(activatedLayer)):
-                    activatedLayer[i] = sigmoid(layerWeightsBias[i][0])
+                    activatedLayer[i] = sigmoid(layerWeightsBias.item(i,0))
                 lastLayer = activatedLayer
                 if layerCounter == len(self.nn)-1:
                     return np.asarray(lastLayer)
@@ -81,31 +81,31 @@ def backProp(nn, img):
     img[0] = np.asmatrix(img[0])
     # Pass this function the error in the forward layer and the weights behind it. It will give you the error in the previous layer.
     def errorInLayer(forwardError, weights):
-        print(f"Weights:{weights}")
-        print(f"forwardError:{forwardError}")
-        print(f"weights.shape{weights.shape}")
+        # print(f"Weights:{weights}")
+        # print(f"forwardError:{forwardError}")
+        # print(f"weights.shape{weights.shape}")
         errorInLayer = np.zeros((weights.shape[1], 1))
-        errorInLayer = np.asmatrix(errorInLayer)
         for i in range(0, weights.shape[0]):
             for j in range(0, weights.shape[1]):
-                print(weights[i][j])
-                print(forwardError[i][0])
-                errorInLayer[j][0] += weights[i][j]*forwardError[i][0]
+            # If statement that if the columns are == to 1 then dont use i on weights of forward error???
+                errorInLayer[j][0] += weights.item((i,j))*forwardError.item((i,0))
+        errorInLayer = np.asmatrix(errorInLayer)
         return errorInLayer
     # Function to adjust the weights and biasses.
     def inBackProp(oporationIndex, neuronError, endOutput):
         # newBias = originalBias+error*lr
         nn.nn[oporationIndex][1] = np.add(nn.nn[oporationIndex][1], nn.lr*neuronError)
         # newWeight = originalWeight+error*lr*originalWeight
-        print(f"OPIND:{oporationIndex}")
+        # print(f"OPIND:{oporationIndex}")
         weights = nn.nn[oporationIndex][0]
-        print(f"weights:{weights}")
+        # print(f"weights:{weights}")
         previousOuput = nn.getRowActivation(img[0], oporationIndex-1)
-        print(f"transposePRE:{np.transpose(previousOuput)}")
-        lrGradient = nn.lr*neuronError*(endOutput*(1-endOutput))
-        print(f"lrGradient:{lrGradient}")
-        print(f"matmul:{np.matmul(lrGradient, np.transpose(previousOuput))}")
-        print("---------------------------------------------------")
+        # print(f"transposePRE:{np.transpose(previousOuput)}")
+        # print(f"neuronError:{neuronError}")
+        lrGradient = nn.lr*np.multiply(neuronError, np.multiply(endOutput, (1-endOutput)))
+        # print(f"lrGradient:{lrGradient}")
+        # print(f"matmul:{np.matmul(lrGradient, np.transpose(previousOuput))}")
+        # print("---------------------------------------------------")
         nn.nn[oporationIndex][0] = np.add(weights, np.matmul(lrGradient, np.transpose(previousOuput)))
         #print(np.add(weights, np.matmul(lrGradient, np.transpose(previousOuput))))
 
@@ -288,7 +288,6 @@ for epocs in range(0, 50):
         averageCost += cost
     averageCost = averageCost/len(trainData)
     print(averageCost)
-
 
 # Cost function
 averageCost = 0
