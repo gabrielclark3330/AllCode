@@ -214,9 +214,9 @@ trainData = [
 
 # Test for xor problem
 strucArr = [2, 2, 1]
-testNN = NuNet(strucArr, .3)
+testNN = NuNet(strucArr, .08)
 
-for epocs in range(0, 1000):
+for epocs in range(0, 10000):
     averageCost = 0
     shuffle(trainData)
     for img in trainData:
@@ -225,9 +225,8 @@ for epocs in range(0, 1000):
         cost = costFunction(result, img[1])
         averageCost += cost
     averageCost = averageCost/len(trainData)
-    print(testNN.run([[1],[1]]),testNN.run([[1],[0]]),testNN.run([[0],[1]]),testNN.run([[0],[0]]))
     print(averageCost)
-
+print(testNN.run([[1],[1]]),testNN.run([[1],[0]]),testNN.run([[0],[1]]),testNN.run([[0],[0]]))
 ######################## XOR END #####################################
 
 # Lables for each of the images
@@ -249,7 +248,6 @@ for img in squares:
 for img in triangles:
     img = np.asarray(img)
     dataSet.append([img, 3])
-shuffle(dataSet)
 shuffle(dataSet)
 dataSet = np.asarray(dataSet)
 
@@ -275,19 +273,25 @@ trainData = dataSet[:cut]
 testData = dataSet[cut:]
 
 # Neural net set up
-strucArr = [784, 8, 8, 3]
-testNN = NuNet(strucArr, .01)
+strucArr = [784, 4, 4, 3]
+testNN = NuNet(strucArr, .1)
  
 # Back prop testing last layer only
 for epocs in range(0, 50):
-    averageCost = 0
+    averageCostTrain = 0
+    averageCostTest = 0
     for img in trainData:
         backProp(testNN, img)
         result = testNN.run(img[0])
         cost = costFunction(result, img[1])
-        averageCost += cost
-    averageCost = averageCost/len(trainData)
-    print(averageCost)
+        averageCostTrain += cost
+    averageCostTrain = averageCostTrain/len(trainData)
+    for img in testData:
+        result = testNN.run(img[0])
+        cost = costFunction(result, img[1])
+        averageCostTest += cost
+    averageCostTest = averageCostTest/len(trainData)
+    print(f"Train:{averageCostTrain} Test:{averageCostTest}")
 
 # Cost function
 averageCost = 0
