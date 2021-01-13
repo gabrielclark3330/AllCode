@@ -1,0 +1,92 @@
+@font-face {
+    font-family: Biotif-Regular;
+    src: url(../images/fonts/biotif.woff2) format("woff2"),
+      url(../images/fonts/biotif.woff) format("woff");
+  }
+  @font-face {
+    font-family: Recoleta;
+    font-style: normal;
+    font-weight: 400;
+    font-stretch: normal;
+    src: url(../images/fonts/recoleta.woff2) format("woff2"),
+      url(../images/fonts/recoleta.woff) format("woff");
+  }
+  body,
+  html {
+    font-family: Biotif-Regular, Helvetica Neue, Helvetica, Arial, sans-serif;
+    background: #FBF8F3;
+    overscroll-behavior: none;
+    overflow-x: hidden;
+  }
+  * {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+.s-nav {
+    position: fixed;
+    width: 100%;
+    background: rgb(36,39,41);
+    box-sizing: border-box;
+    left: 0px;
+    top: 0px;
+}
+.c-nav {
+    display: flex;
+    max-width: 1600px;
+    width: 100%;
+    margin: auto auto;
+}
+.c-nav-list {
+    margin: 0 auto;
+    list-style-type: none;
+    padding: 0;
+    overflow: hidden;
+    max-width: 95%;
+}
+.c-nav-list {
+    display: flex;
+    list-style-type: none;
+    max-width: 90%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    justify-content: space-between;
+}
+.navE {
+    text-align: center;
+    padding: 5px;
+
+}
+.work .about .contact{
+    display: inline-block;
+    justify-content: flex-start;
+}
+.logo {
+    justify-content: center;
+}
+.linkedin .twitter {
+    display: inline-block;
+    justify-content: flex-end;
+}
+.work :hover {
+    .c-nav_work {
+        transform: translate(0px, 0px);
+    }
+}
+.c-nav-list__link {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 10px;
+    text-decoration: none;
+    font-size: 25px;
+    font-weight: 300;
+}
+.c-nav_work {
+    transform: translate(-999px, 0px);
+}
+
+.body {
+    background: rgb(47,51,55);
+    color: white;
+}
