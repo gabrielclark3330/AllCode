@@ -151,17 +151,15 @@
     padding: 3em 3em 4em;
     text-decoration: none;
     background-color: #ffffff;
+    overflow: hidden;
 }
 .c-tiles {
+    z-index: 1000; /*Decide if cards go over or under header*/
     position: relative;
-    z-index: 1000;
     margin: 4em auto 0;
     max-width: 90%;
-    display: -ms-grid;
     display: grid;
     gap: 4em;
-    -ms-grid-columns: (1fr) [1];
-    grid-template-columns: repeat(1, 1fr);
 }
   .c-tile__title {
     font-family: Recoleta, Helvetica Neue, Helvetica, Arial, sans-serif;
@@ -193,4 +191,57 @@
     transition: all 0.4s ease-in-out;
     max-width: 100%;
     display: inline-block;
+}
+/*NASA*/
+.c-tile__img--ns {
+    max-width: 80%;
+}
+  @media (min-width: 425px) {
+    .c-tile__img--ns {
+      filter: drop-shadow(0 52px 74px rgba(0, 21, 64, 0.377));
+    }
+}
+  @media (min-width: 616px) {
+    .c-tile__img--ns {
+      max-width: 444px;
+    }
+}
+/*BiiM Lab*/
+.c-tile__holder--biim:before {
+    content: "";
+    width: 40px;
+    height: 120px;
+    background: url(/images/hp/editor.png) 0 0 no-repeat;
+    background-size: contain;
+    display: none;
+    position: absolute;
+    right: -60px;
+    top: 0;
+}
+.c-tile__img--biim {
+    max-width: 50vw;
+}
+@media (min-width: 425px) {
+    .c-tile__img--biim {
+        filter: drop-shadow(0 52px 74px rgba(0, 21, 64, 0.138559));
+    }
+}
+@media (min-width: 768px) {
+    .c-tile__holder--biim:before {
+      display: block;
+    }
+}
+/*ClarkCreative*/
+.c-title__img--cc {
+    max-width: 50vw;
+}
+@media (min-width: 425px) {
+    .c-tile__img--cc {
+        filter: drop-shadow(0 52px 74px rgba(0, 21, 64, 0.138559));
+    }
+}
+@media (min-width: 1230px) {
+    .c-tile__img--cc {
+      max-width: 971px;
+    }
 }
