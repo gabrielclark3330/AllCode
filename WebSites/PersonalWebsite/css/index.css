@@ -82,6 +82,9 @@
     justify-content: flex-end;
     fill: black;
 }
+.work :hover {
+    color: #F58433;
+}
 .about :hover {
     color: #F58433;
 }
@@ -147,14 +150,24 @@
     border-radius: 20px;
     position: relative;
     display: block;
-    transition: all 0.4s ease-in-out;
+    transition: all 0.7s ease-in-out;
     padding: 3em 3em 4em;
     text-decoration: none;
-    background-color: #ffffff;
     overflow: hidden;
+    /*glassmorphism effect tuned */
+    background: rgba( 255, 255, 255, 0.50 );
+    backdrop-filter: blur( 7.5px );
+    -webkit-backdrop-filter: blur( 7.5px );
+    /* border: 1px solid rgba( 255, 255, 255, 0.18 ); so far causing problems with blue lines apearing*/
+}
+.c-title__category {
+    text-align: right;
+}
+.c-tile__title {
+    text-align: right;
 }
 .c-tiles {
-    z-index: 1000; /*Decide if cards go over or under header*/
+    z-index: 1; /*Decide if cards go over or under header*/
     position: relative;
     margin: 4em auto 0;
     max-width: 90%;
@@ -193,13 +206,17 @@
     display: inline-block;
 }
 /*NASA*/
+.c-tile--ns {
+    
+}
 .c-tile__img--ns {
     max-width: 80%;
 }
   @media (min-width: 425px) {
-    .c-tile__img--ns {
+    /*.c-tile__img--ns {
       filter: drop-shadow(0 52px 74px rgba(0, 21, 64, 0.377));
     }
+    */
 }
   @media (min-width: 616px) {
     .c-tile__img--ns {
@@ -207,6 +224,9 @@
     }
 }
 /*BiiM Lab*/
+.c-tile--biim {
+    
+}
 .c-tile__holder--biim:before {
     content: "";
     width: 40px;
@@ -220,11 +240,13 @@
 }
 .c-tile__img--biim {
     max-width: 50vw;
+    border-radius: 15px;
 }
 @media (min-width: 425px) {
-    .c-tile__img--biim {
+    /*.c-tile__img--biim {
         filter: drop-shadow(0 52px 74px rgba(0, 21, 64, 0.138559));
     }
+    */
 }
 @media (min-width: 768px) {
     .c-tile__holder--biim:before {
@@ -232,16 +254,109 @@
     }
 }
 /*ClarkCreative*/
+.c-tile--cc {
+    
+}
 .c-title__img--cc {
     max-width: 50vw;
 }
 @media (min-width: 425px) {
+    /*
     .c-tile__img--cc {
         filter: drop-shadow(0 52px 74px rgba(0, 21, 64, 0.138559));
     }
+    */
 }
 @media (min-width: 1230px) {
     .c-tile__img--cc {
       max-width: 971px;
     }
+}
+/*Vishay*/
+/*Custom ML*/
+/*MATHCOUNTS*/
+/* moves the cards / adds drop shaddow */
+@media (min-width: 1230px) {
+    .c-tile {
+        position: relative;
+        transition: all 0.7s ease-in-out;
+        display: block;
+        -ms-flex-pack: center;
+        justify-content: center;
+        -ms-flex-align: center;
+        align-items: center;
+        padding: 3em 3em 4em;
+        height: 1000px;
+        width: 1107px;
+        text-decoration: none;
+    }   
+}
+  .c-tile:hover {
+    text-decoration: none;
+}
+@media (min-width: 544px) {
+    .c-tile:hover {
+      transform: translate3d(0, -5px, 0);
+      box-shadow: 0 52px 74px rgba(0, 0, 0, 0.12);
+    }
+}
+@media (min-width: 544px) {
+    .c-tile:hover img {
+      transform: translate3d(0, -10px, 0);
+    }
+}
+.c-tile:active,
+.c-tile:focus {
+    text-decoration: none;
+}
+.c-tile:active {
+    transition: all 0.3s ease-out;
+    transform: scale3d(0.99, 0.99, 0.99) translateZ(0);
+    box-shadow: 0 0 0 transparent;
+}
+.c-tile__img {
+    position: relative;
+    transition: all 0.4s ease-in-out;
+    max-width: 100%;
+    display: inline-block;
+}
+/*background shapes*/
+.circleBot {
+    height: 50vw;
+    width: 50vw;
+    background-color: #31526F;
+    border-radius: 50%;
+    position: fixed;
+    bottom: -10vh;
+    right: -20vw;
+}
+
+.triangleTop {
+    width: 0;
+    height: 0;
+    transform: rotate(-30deg);
+    border-style: solid;
+    border-width: 15vw 0 0 11.8vw;
+    border-color: transparent transparent transparent #B5C672;
+    top: 10vh;
+    left: 5vw;
+    position: fixed;
+}
+.squareMid {
+    position: fixed;
+    width: 25vw;
+    height: 25vw;
+    transform: rotate(20deg);
+    background-color: #EDDC80;
+    top: 20vh;
+    left: 60vw;
+}
+.rectangle {
+    position: fixed;
+    width: 25vw;
+    height: 50vw;
+    transform: rotate(-20deg);
+    background-color: #07283b;
+    top: 50vh;
+    left: 10vw;
 }
