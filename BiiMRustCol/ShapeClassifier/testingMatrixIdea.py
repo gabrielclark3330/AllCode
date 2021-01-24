@@ -53,10 +53,14 @@ class NuNet:
             if layerCounter < len(self.strucArr):
                 layerWeights = np.matmul(self.nn[layerCounter][0], lastLayer)
                 layerWeightsBias = np.add(layerWeights, self.nn[layerCounter][1])
-                activatedLayer = np.zeros((len(layerWeightsBias),1))
-                for i in range(0, len(activatedLayer)):
-                    activatedLayer[i] = sigmoid(layerWeightsBias[i][0])
-                lastLayer = activatedLayer
+                # Piece that activates the layers.
+                if layerCounter != len(self.nn)-1:
+                    activatedLayer = np.zeros((len(layerWeightsBias),1))
+                    for i in range(0, len(activatedLayer)):
+                        activatedLayer[i] = sigmoid(layerWeightsBias[i][0])
+                    lastLayer = activatedLayer
+                else:
+                    lastLayer = layerWeightsBias
                 if layerCounter == index:
                     return np.asarray(lastLayer)
                 layerCounter +=1
@@ -68,10 +72,14 @@ class NuNet:
             if layerCounter < len(self.strucArr):
                 layerWeights = np.matmul(self.nn[layerCounter][0], lastLayer)
                 layerWeightsBias = np.add(layerWeights, self.nn[layerCounter][1])
-                activatedLayer = np.zeros((len(layerWeightsBias),1))
-                for i in range(0, len(activatedLayer)):
-                    activatedLayer[i] = sigmoid(layerWeightsBias.item(i,0))
-                lastLayer = activatedLayer
+                # Piece that activates the layers.
+                if layerCounter != len(self.nn)-1:
+                    activatedLayer = np.zeros((len(layerWeightsBias),1))
+                    for i in range(0, len(activatedLayer)):
+                        activatedLayer[i] = sigmoid(layerWeightsBias.item(i,0))
+                    lastLayer = activatedLayer
+                else:
+                    lastLayer = layerWeightsBias
                 if layerCounter == len(self.nn)-1:
                     return np.asarray(lastLayer)
                 layerCounter +=1
