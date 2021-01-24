@@ -280,8 +280,8 @@ cut = math.floor((len(dataSet) * train))
 trainData = dataSet[:cut]
 testData = dataSet[cut:]
 
-# Neural net set up
-strucArr = [784, 4, 4, 3]
+# Neural net set up: NuNet takes two parameters EX: NuNet(a structural array with the layer archetectures, a learning rate parameter)
+strucArr = [784, 128, 3]
 testNN = NuNet(strucArr, .1)
  
 # Back prop testing last layer only
