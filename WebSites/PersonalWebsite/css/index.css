@@ -30,6 +30,7 @@
       width: 100vw;
   }
 .s-nav {
+    z-index: 1;
     position: fixed;
     width: 100vw;
     left: 0px;
@@ -116,7 +117,7 @@
     height: 1px;
     width: 90vw;
     top: 8vh;
-    margin: 0 auto 0 auto;
+    margin: 0 auto 70px auto;
 }
 .head-text {
     height:fit-content;
@@ -144,7 +145,6 @@
     text-decoration: none;
     color: black;
 }
-/* start of hell --> */
 .c-tile {
     width: 100%;
     border-radius: 20px;
@@ -152,6 +152,7 @@
     display: block;
     transition: all 0.7s ease-in-out;
     padding: 3em 3em 4em;
+    margin: 4em auto 0 auto;
     text-decoration: none;
     overflow: hidden;
     /*glassmorphism effect tuned */
@@ -167,9 +168,9 @@
     text-align: right;
 }
 .c-tiles {
-    z-index: 1; /*Decide if cards go over or under header*/
+    z-index: 0; /*Decide if cards go over or under header*/
     position: relative;
-    margin: 4em auto 0;
+    margin: 4em auto 0 auto;
     max-width: 90%;
     display: grid;
     gap: 4em;
@@ -291,9 +292,6 @@
         text-decoration: none;
     }   
 }
-  .c-tile:hover {
-    text-decoration: none;
-}
 @media (min-width: 544px) {
     .c-tile:hover {
       transform: translate3d(0, -5px, 0);
@@ -306,7 +304,7 @@
     }
 }
 .c-tile:active,
-.c-tile:focus {
+.c-tile:focus, .hover {
     text-decoration: none;
 }
 .c-tile:active {
@@ -322,6 +320,7 @@
 }
 /*background shapes*/
 .circleBot {
+    z-index: -1;
     height: 50vw;
     width: 50vw;
     background-color: #31526F;
@@ -332,6 +331,7 @@
 }
 
 .triangleTop {
+    z-index: -1;
     width: 0;
     height: 0;
     transform: rotate(-30deg);
@@ -343,6 +343,7 @@
     position: fixed;
 }
 .squareMid {
+    z-index: -1;
     position: fixed;
     width: 25vw;
     height: 25vw;
@@ -352,6 +353,7 @@
     left: 60vw;
 }
 .rectangle {
+    z-index: -1;
     position: fixed;
     width: 25vw;
     height: 50vw;
@@ -359,4 +361,36 @@
     background-color: #07283b;
     top: 50vh;
     left: 10vw;
+}
+/*Sub Page Formatting -->*/
+
+.c-sub-page-about {
+    width: 100%;
+    border-radius: 20px;
+    position: relative;
+    display: block;
+    transition: all 0.7s ease-in-out;
+    padding: 3em 3em 4em;
+    margin: 4em auto 0 auto;
+    text-decoration: none;
+    overflow: hidden;
+    text-align: center;
+    /*glassmorphism effect tuned */
+    background: rgba( 255, 255, 255, 0.50 );
+    backdrop-filter: blur( 7.5px );
+    -webkit-backdrop-filter: blur( 7.5px );
+    transform: translate3d(0, -5px, 0);
+    box-shadow: 0 52px 74px rgba(0, 0, 0, 0.12);
+    /* border: 1px solid rgba( 255, 255, 255, 0.18 ); so far causing problems with blue lines apearing*/
+}
+.c-sub-page-about:hover {
+}
+.c-sub-page-about:active,
+.c-sub-page-about:focus, hover {
+    text-decoration: none;
+}
+.c-sub-page-about:active {
+    transition: all 0.3s ease-out;
+    transform: scale3d(0.99, 0.99, 0.99) translateZ(0);
+    box-shadow: 0 0 0 transparent;
 }
