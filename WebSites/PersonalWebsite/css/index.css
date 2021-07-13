@@ -260,6 +260,8 @@
 }
 .c-title__img--cc {
     max-width: 50vw;
+    /*Border-radius is not working*/
+    border-radius: 50px;
 }
 @media (min-width: 425px) {
     /*
