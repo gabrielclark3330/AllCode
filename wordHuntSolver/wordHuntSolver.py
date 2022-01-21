@@ -1,7 +1,7 @@
 import csv
 import os
 
-def isWordInTrie(trie, word)->bool:
+def isWordInTrie(trie, word) -> bool:
 	node = trie
 	for char in word:
 		if char not in node:
@@ -13,7 +13,7 @@ def isWordInTrie(trie, word)->bool:
 	else:
 		return False
 
-def isSufixInTrie(trie, word)->bool:
+def isSufixInTrie(trie, word) -> bool:
 	node = trie
 	for char in word:
 		if char not in node:
@@ -22,7 +22,7 @@ def isSufixInTrie(trie, word)->bool:
 			node = node[char]
 	return False
 
-def nextPossibleLetters(trie, word)->[]:
+def nextPossibleLetters(trie, word) -> List[T]:
 	node = trie
 	for char in word:
 		if char not in node:
